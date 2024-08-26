@@ -2,7 +2,7 @@ import streamlit as st
 import sqlite3
 from datetime import datetime
 
-# データベースの初期化
+# Initialize the database
 def init_db():
     conn = sqlite3.connect('diary.db')
     c = conn.cursor()
@@ -17,7 +17,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-# データの保存
+# Save entry to the database
 def save_entry(date, content, emotion):
     conn = sqlite3.connect('diary.db')
     c = conn.cursor()
@@ -27,7 +27,7 @@ def save_entry(date, content, emotion):
     conn.commit()
     conn.close()
 
-# データの読み込み
+# Retrieve entries from the database
 def get_entries():
     conn = sqlite3.connect('diary.db')
     c = conn.cursor()
@@ -39,32 +39,30 @@ def get_entries():
     conn.close()
     return entries
 
-# メインアプリの定義
+# Define the main application
 def main():
-    st.title("日記アプリ")
-    st.write("日記を入力し、感情を1（気分が沈んでいる）から10（非常にハッピー）で評価してください。")
-    st.write("")
-    
+    st.title("Diary App")
+    st.write("Please enter your diary entry and rate your mood on a scale from 1 (feeling down) to 10 (feeling very happy).")
 
-    # ユーザーの入力
-    date = st.date_input("日付", datetime.now())
-    content = st.text_area("日記")
-    emotion = st.slider("感情を1から10で評価します (1: 気分が沈んでいる, 10: 非常にハッピー)", 1, 10, 5)
+    # User input
+    date = st.date_input("Select a date", datetime.now())
+    content = st.text_area("Enter your diary entry here")
+    emotion = st.slider("Rate your mood from 1 to 10 (1: feeling down, 10: very happy)", 1, 10, 5)
 
-    if st.button("保存"):
+    if st.button("Save"):
         if content:
             save_entry(date.strftime('%Y-%m-%d'), content, emotion)
-            st.success("日記が保存されました。")
+            st.success("Your diary entry has been saved.")
         else:
-            st.error("日記の内容を入力してください。")
+            st.error("Please enter the content of your diary.")
 
-    # 保存された日記の表示
-    st.write("## 保存された日記")
+    # Display saved diary entries
+    st.write("## Saved Diary Entries")
     entries = get_entries()
     for entry in entries:
-        st.write(f"**日時:** {entry[0]}")
-        st.write(f"**内容:** {entry[1]}")
-        st.write(f"**感情スコア:** {entry[2]}")
+        st.write(f"**Date:** {entry[0]}")
+        st.write(f"**Content:** {entry[1]}")
+        st.write(f"**Emotion Score:** {entry[2]}")
         st.write("---")
 
 if __name__ == "__main__":
