@@ -1,6 +1,8 @@
 import streamlit as st
 import sqlite3
+import pandas as pd
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 # データベースの初期化
 def init_db():
@@ -59,11 +61,29 @@ def main():
     # 保存された日記の表示
     st.write("## 保存された日記")
     entries = get_entries()
+    dates = []
+    emotions = []
     for entry in entries:
         st.write(f"**日時:** {entry[0]}")
         st.write(f"**内容:** {entry[1]}")
         st.write(f"**感情スコア:** {entry[2]}")
         st.write("---")
+        dates.append(entry[0])
+        emotions.append(entry[2])
+    
+    # 感情スコアのグラフ表示
+    if dates and emotions:
+        st.write("## 感情スコアの推移")
+        df = pd.DataFrame({'Date': dates, 'Emotion': emotions})
+        df['Date'] = pd.to_datetime(df['Date'])
+        df = df.sort_values('Date')
+        plt.figure(figsize=(10, 5))
+        plt.plot(df['Date'], df['Emotion'], marker='o', linestyle='-', color='b')
+        plt.xlabel('Date')
+        plt.ylabel('Emotion Score')
+        plt.title('Emotion Score Over Time')
+        plt.grid()
+        st.pyplot(plt)
 
 if __name__ == "__main__":
     init_db()
