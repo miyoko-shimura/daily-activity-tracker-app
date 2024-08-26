@@ -43,6 +43,8 @@ def get_entries():
 def main():
     st.title("日記アプリ")
     st.write("日記を入力し、感情を1（気分が沈んでいる）から10（非常にハッピー）で評価してください。")
+    st.write("")
+    
 
     # ユーザーの入力
     date = st.date_input("日付", datetime.now())
