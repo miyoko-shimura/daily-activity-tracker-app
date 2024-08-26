@@ -45,9 +45,9 @@ def main():
     st.write("日記を入力し、感情を1（気分が沈んでいる）から10（非常にハッピー）で評価してください。")
 
     # ユーザーの入力
-    date = st.date_input("日付を選択してください", datetime.now())
-    content = st.text_area("日記を入力してください")
-    emotion = st.slider("感情を1から10で評価してください (1: 気分が沈んでいる, 10: 非常にハッピー)", 1, 10, 5)
+    date = st.date_input("日付", datetime.now())
+    content = st.text_area("日記")
+    emotion = st.slider("感情を1から10で評価します (1: 気分が沈んでいる, 10: 非常にハッピー)", 1, 10, 5)
 
     if st.button("保存"):
         if content:
