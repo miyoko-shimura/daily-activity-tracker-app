@@ -18,12 +18,12 @@ def init_db():
     conn.close()
 
 # データの保存
-def save_entry(content, emotion):
+def save_entry(date, content, emotion):
     conn = sqlite3.connect('diary.db')
     c = conn.cursor()
     c.execute('''
         INSERT INTO diary (date, content, emotion) VALUES (?, ?, ?)
-    ''', (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), content, emotion))
+    ''', (date, content, emotion))
     conn.commit()
     conn.close()
 
@@ -42,15 +42,16 @@ def get_entries():
 # メインアプリの定義
 def main():
     st.title("日記アプリ")
-    st.write("日記を入力し、感情を1から10で評価してください。")
+    st.write("日記を入力し、感情を1（気分が沈んでいる）から10（非常にハッピー）で評価してください。")
 
     # ユーザーの入力
+    date = st.date_input("日付を選択してください", datetime.now())
     content = st.text_area("日記を入力してください")
-    emotion = st.slider("感情を1から10で評価してください", 1, 10, 5)
+    emotion = st.slider("感情を1から10で評価してください (1: 気分が沈んでいる, 10: 非常にハッピー)", 1, 10, 5)
 
     if st.button("保存"):
         if content:
-            save_entry(content, emotion)
+            save_entry(date.strftime('%Y-%m-%d'), content, emotion)
             st.success("日記が保存されました。")
         else:
             st.error("日記の内容を入力してください。")
