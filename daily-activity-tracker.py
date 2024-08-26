@@ -42,7 +42,7 @@ def get_entries():
 # Define the main application
 def main():
     st.title("Daily Activity Tracker App")
-    st.write("Enter your diary entry and rate your mood on a scale from 1 to 10")
+    st.write("Enter your diary entry and rate your mood.")
 
     # User input
     date = st.date_input("Select a date", datetime.now())
